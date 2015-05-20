@@ -27,6 +27,8 @@ from a library name to a URI, we would just require that the library name is
 consistent with a set of resolution rules. Please refer to the other proposal
 for more details.
 
+For additional background, see this [thread in core-dev](https://groups.google.com/a/dartlang.org/forum/#!topic/core-dev/Mtii4OONYkQ).
+
 ## Example
 
 When writing a part header a user can write:
