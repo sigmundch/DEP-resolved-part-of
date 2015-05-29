@@ -8,24 +8,26 @@ Author: Sigmund Cherem ([@sigmundch][])
 
 ## Summary
 
-We propose changing `part of` directives to provide a URI, instead of a name, to
-identify the library that contians it.
+We propose changing `part of` directives to specify either a library
+name (as it is today) or a URI to identify the library that contains it.
 
 All other directives in dart (import, export, part) use a URI to uniquely
-identify the relation between files, we simply propose to make this consistent
-also for the part-of directive.
+identify the relation between files, this proposal is one step towards making
+this consistent also for the part-of directives.
 
-Because part-of directives are mainly used for tooling, we could introduce this
-change in a non-breaking way. For example, producing warnings for old-style part
-headers.
+Because part-of directives are mainly used for tooling, we propose introducing
+this change in a non-breaking way. Providing a library name is still allowed.
 
 We should consider this proposal together with a [concurrent
 DEP][DEP-nonuri-imports] that proposes encoding imports as library identifiers.
-At a syntax level, that proposal would make the changes for part-of directive
-smaller when implementing this proposal. Instead of requiring users to change
-from a library name to a URI, we would just require that the library name is
-consistent with a set of resolution rules. Please refer to the other proposal
-for more details.
+At a syntax level, that proposal matches the identifier syntax for part-of
+directives today, but semantically it makes library names syntactic sugar for
+URIs. If that proposal is accepted, it would be natural to make `part of`
+directives produce a compile-time error if the library name doesn't expand to a
+known library accoding to the [desugaring rules][rules]. This error would be
+consistent with what other directives do today. Alternative, we we wanted to
+avoid making this a breaking change, we could produce a static warning until
+Dart reaches version 2.0.
 
 For additional background, see this [thread in core-dev](https://groups.google.com/a/dartlang.org/forum/#!topic/core-dev/Mtii4OONYkQ).
 
@@ -48,5 +50,35 @@ uriOrLibraryIdentifier: uri
                       ;
 ```
 
+We would change section **18.3** as follows (~~strikethrough~~ means to delete,
+**bold** means to add):
+
+> A part header begins with `part of` followed by **either a URI** or the name of
+> the library the part belongs to.  A part declaration consists of a part header
+> followed by a sequence of top-level declarations.  **It is a compile-time
+> error if the specified URI does not refer to a library declaration.**
+>
+> Compiling a part directive of the form `part s`; causes the Dart system to
+> attempt to compile the contents of the URI that is the value of *s*. The
+> top-level declarations at that URI are then compiled by the Dart compiler in
+> the scope of the current library. It is a compile-time error if the contents
+> of the URI are not a valid part declaration. It is a static warning if the
+> referenced part declaration *p* ~~names~~ **refers to** a library other than
+> the current library as the library to which *p* belongs.
+
+If the [concurrent proposal][DEP-nonuri-imports] is also accepted, we'd change
+this section further to reflect that now library identifiers may produce an
+error (the text below shows additional changes on top of the text above):
+
+> A part header begins with `part of` followed by either a URI or the ~~name~~
+> **identifier** of the library the part belongs to.  A part declaration
+> consists of a part header followed by a sequence of top-level declarations.
+> It is a compile-time error if the specified URI **or library identifier** does
+> not refer to a library declaration.
+>
+> ...
+
+
 [DEP-nonuri-imports]: https://github.com/sigmundch/DEP-nonuri-imports/blob/master/proposal.md
 [@sigmundch]: https://github.com/sigmundch
+[rules]: https://github.com/sigmundch/DEP-nonuri-imports/blob/master/proposal.md#syntax-and-semantics
