@@ -16,16 +16,15 @@ identify the relation between files, this proposal is one step towards making
 this consistent also for the part-of directives.
 
 Because part-of directives are mainly used for tooling, we propose introducing
-this change in a non-breaking way. Providing a library name is still allowed.
-
-We should consider this proposal together with a [concurrent
+this change in a non-breaking way. Providing a library name continues to be
+allowed. However, we should consider this proposal together with a [concurrent
 DEP][DEP-nonuri-imports] that proposes encoding imports as library identifiers.
 At a syntax level, that proposal matches the identifier syntax for part-of
 directives today, but semantically it makes library names syntactic sugar for
 URIs. If that proposal is accepted, it would be natural to make `part of`
 directives produce a compile-time error if the library name doesn't expand to a
 known library accoding to the [desugaring rules][rules]. This error would be
-consistent with what other directives do today. Alternative, we we wanted to
+consistent with what other directives do today. Alternatively, if we wanted to
 avoid making this a breaking change, we could produce a static warning until
 Dart reaches version 2.0.
 
@@ -68,7 +67,8 @@ We would change section **18.3** as follows (~~strikethrough~~ means to delete,
 
 If the [concurrent proposal][DEP-nonuri-imports] is also accepted, we'd change
 this section further to reflect that now library identifiers may produce an
-error (the text below shows additional changes on top of the text above):
+error (the text below shows only the additional changes on top of the previous
+changes we showed earlier):
 
 > A part header begins with `part of` followed by either a URI or the ~~name~~
 > **identifier** of the library the part belongs to.  A part declaration
