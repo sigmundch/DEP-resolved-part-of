@@ -4,7 +4,7 @@
 
 Author: Sigmund Cherem ([@sigmundch][])
 
-[DEP proposal location](https://github.com/sigmundch/DEP-nonuri-imports/blob/master/proposal.md)
+[DEP proposal location](https://github.com/sigmundch/DEP-resolved-part-of/edit/master/proposal.md)
 
 ## Summary
 
